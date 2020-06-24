@@ -1,5 +1,3 @@
-import './styles/styles.css';
-
 export { Datepicker as EDKDatepicker } from './datepicker'
 export { EDKAlert } from './alert'
 export { CodeInput as EDKCodeInput } from './code-input'
@@ -12,7 +10,6 @@ export { Modal as EDKModal } from './modal'
 export { Pagination as EDKPagination } from './pagination'
 export { Portal as EDKPortal } from './portal'
 export { ProgressLine as EDKProgressLine } from './progress-line'
-export { EDKSearch } from './search'
 export { Tooltip as EDKTooltip } from './tooltip'
 export { Checkbox as EDKCheckbox } from './checkbox'
 export {
@@ -46,5 +43,7 @@ export {
   moneyFormat,
   formattedDate,
   shortNumberFormat,
-  clamp
+  clamp,
+  randomChar,
+  isBlank
 } from './functions'

@@ -7,6 +7,24 @@ node_modules
 # builds
 .rpt2_cache
 src
+alert
+button
+checkbox
+code-input
+datepicker
+donuc-cart
+flex
+functions
+hooks
+input
+line-chart
+modal
+loading
+pagination
+portal
+progress-line
+search
+tooltip
 
 # misc
 .DS_Store

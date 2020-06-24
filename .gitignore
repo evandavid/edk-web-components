@@ -25,6 +25,14 @@ portal
 progress-line
 search
 tooltip
+.babelrc
+.eslintignore
+.eslintrc
+.prettierrc
+.sassrc
+.travis.yml
+tsconfig.json
+yarn.lock
 
 # misc
 .DS_Store

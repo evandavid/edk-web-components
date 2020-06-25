@@ -14,7 +14,7 @@
   "scripts": {
     "bundle-definition": "dts-bundle --name edk-web-components --baseDir ./dist --out index.d.ts --main dist/index.d.ts",
     "build-css": "sass --no-source-map --style compressed --load-path node_modules src/styles/styles.scss dist/styles.css",
-    "build": "microbundle-crl --compress --format modern,cjs & yarn run build-css & bundle-definition",
+    "build": "microbundle-crl --compress --format modern,cjs && yarn run build-css && yarn run bundle-definition",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "predeploy": "cd example && yarn install && yarn run build"
   },

@@ -16,18 +16,19 @@ import styled from 'styled-components';
 
 import { MDCMenu } from '@material/menu';
 import MaterialIcon from '@material/react-material-icon';
-import { HelperText, Input } from '@material/react-text-field';
+import { HelperText } from '@material/react-text-field';
 
 import { FlexOne, FlexRow } from '../flex';
 import { CustomInputProps } from './';
-import MDTTextField from './native/mdt-text-field';
+import { EDKNativeInput } from './native/edk-input';
+import EDKTextField from './native/edk-text-field';
 import { ModuitMenuFoundation } from './native/menu-foundation';
 
-const StyledTextField: any = styled(MDTTextField)`
+const StyledTextField: any = styled(EDKTextField)`
   width: 100%;
 `
 
-const StyledInput: any = styled(Input)<any>`
+const StyledInput: any = styled(EDKNativeInput)<any>`
   color: ${(props) =>
     props.originaltype === 'yes'
       ? 'transparent'
@@ -359,6 +360,7 @@ function Selects(props: ISelectProps) {
           onFocus={onFocusParent}
           autoComplete={'off'}
           readOnly={true}
+          aria-placeholder={props.placeholder}
         />
       </StyledTextField>
 

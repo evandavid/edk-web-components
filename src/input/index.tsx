@@ -3,10 +3,11 @@ import format from 'number-format.js';
 import React, { ChangeEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { HelperText, Input } from '@material/react-text-field';
+import { HelperText } from '@material/react-text-field';
 
 import { randomChar } from '../functions';
-import MDTTextField from './native/mdt-text-field';
+import { EDKNativeInput } from './native/edk-input';
+import EDKTextField from './native/edk-text-field';
 
 const formatting: any = {
   en: '#,##0.####',
@@ -106,11 +107,11 @@ export interface CustomInputProps
   disableChange?: boolean
 }
 
-const StyledTextField: any = styled(MDTTextField)`
+const StyledTextField: any = styled(EDKTextField)`
   width: 100%;
 `
 
-const StyledInput: any = styled(Input)<any>`
+const StyledInput: any = styled(EDKNativeInput)<any>`
   color: ${(props) =>
     props.originaltype === 'password'
       ? 'transparent'
@@ -460,6 +461,7 @@ function Inputs(props: CustomInputProps) {
           originaltype={props.type}
           spellCheck={'false'}
           className={props.inputClassName}
+          aria-placeholder={props.placeholder}
         />
       </StyledTextField>
 

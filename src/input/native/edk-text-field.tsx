@@ -3,7 +3,7 @@ import React from 'react';
 import NotchedOutline from '@material/react-notched-outline';
 import TextField from '@material/react-text-field';
 
-class MDTTextField extends TextField {
+class EDKTextField extends TextField {
   renderNotchedOutline() {
     const { notchedOutlineClassName, required } = this.props
     const { notchedLabelWidth, outlineIsNotched } = this.state
@@ -36,4 +36,4 @@ class MDTTextField extends TextField {
   }
 }
 
-export default React.memo(MDTTextField)
+export default React.memo(EDKTextField)

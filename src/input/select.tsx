@@ -113,7 +113,9 @@ function Selects(props: ISelectProps) {
     'behaviour',
     'parentStyle',
     'disableChange',
-    'minDate'
+    'minDate',
+    'onTrailingIconSelect',
+    'trailingIcon'
   ])
 
   const textFieldProps = pick(props, ['label', 'onTrailingIconSelect'])

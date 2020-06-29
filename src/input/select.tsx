@@ -116,7 +116,7 @@ function Selects(props: ISelectProps) {
     'minDate'
   ])
 
-  const textFieldProps = pick(props, ['label'])
+  const textFieldProps = pick(props, ['label', 'onTrailingIconSelect'])
   const { parentStyle = {} } = props
 
   const [maskedValue, setMasked] = useState<any>()
@@ -345,7 +345,11 @@ function Selects(props: ISelectProps) {
           ) : undefined
         }
         className={props.className}
-        trailingIcon={<MaterialIcon role={'button'} icon={'arrow_drop_down'} />}
+        trailingIcon={
+          props.trailingIcon || (
+            <MaterialIcon role={'button'} icon={'arrow_drop_down'} />
+          )
+        }
       >
         <StyledInput
           {...inputProps}

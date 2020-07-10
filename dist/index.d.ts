@@ -298,7 +298,7 @@ declare module 'edk-web-components/line-chart/util' {
         current: any;
     }[], detailContainerRef: {
         current: any;
-    }, formattedValue: ((val: any) => any)[]) => {
+    }, formattedValue: ((val: any) => any)[], readyToProcess: boolean) => {
         verticalMaxMin: MinMax;
         firstAndLastDate: FirstLast;
         lines: any[] | undefined;
@@ -318,7 +318,7 @@ declare module 'edk-web-components/line-chart/util' {
         current: any;
     }[], detailContainerRef: {
         current: any;
-    }, formattedValue: ((val: any) => any)[]) => {
+    }, formattedValue: ((val: any) => any)[], readyToProcess: boolean) => {
         verticalMaxMin: MinMax[];
         firstAndLastDate: FirstLast;
         lines: string[] | undefined;

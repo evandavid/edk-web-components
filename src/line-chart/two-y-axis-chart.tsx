@@ -1,32 +1,32 @@
-import { map, range } from 'lodash';
-import React, { memo, useRef } from 'react';
+import { isEqual, map, range, sortBy } from 'lodash';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import { FlexOne, FlexRow } from '../flex';
 import { formattedDate, numberFormat, shortNumberFormat } from '../functions';
 import {
-    Container,
-    CursorContainer,
-    CursorElement,
-    DateDetailContainer,
-    DateLabel,
-    DetailContainer,
-    DetailLabelText,
-    DetailTextContainer,
-    DetailTextInnerContainer,
-    DottedLine,
-    HorizontalLabel,
-    HorizontalLine,
-    Label,
-    LabelTitle,
-    LegendElement,
-    LineChartContainer,
-    LineInnerContainer,
-    VerticalContainer,
-    VerticalCursor,
-    VerticalLabelContainer,
-    VerticalLine,
-    WhiteCursor,
-    ZeroLabel
+  Container,
+  CursorContainer,
+  CursorElement,
+  DateDetailContainer,
+  DateLabel,
+  DetailContainer,
+  DetailLabelText,
+  DetailTextContainer,
+  DetailTextInnerContainer,
+  DottedLine,
+  HorizontalLabel,
+  HorizontalLine,
+  Label,
+  LabelTitle,
+  LegendElement,
+  LineChartContainer,
+  LineInnerContainer,
+  VerticalContainer,
+  VerticalCursor,
+  VerticalLabelContainer,
+  VerticalLine,
+  WhiteCursor,
+  ZeroLabel
 } from './elements';
 import { ChartColors, twoYAxisLineChartAction } from './util';
 
@@ -53,6 +53,38 @@ function _TwoYAxisLineChart(props: {
   const VerticalCursorRef = useRef<any>()
   const SelectedDateDetailRef = useRef<any>()
   const DetailContainerRef = useRef<any>()
+  const holderData = useRef<any>()
+
+  const [readyToProcess, setReadyToProcess] = useState<boolean>(false)
+  const [lineData, setLineData] = useState<number[][]>(data)
+  const [lineDate, setLineDate] = useState<string[]>(date)
+
+  // preprocessing sort date
+  const preprocessing = useCallback(() => {
+    !isEqual(holderData.current, props.data) &&
+      (() => {
+        setReadyToProcess(false)
+        const combined = map(date, (_, i) => ({
+          date: date[i],
+          1: data[0][i],
+          2: data[1][i]
+        }))
+
+        const sorted: any = sortBy(combined, ['date'], ['asc'])
+        let _date: any = [],
+          _data = [[], []]
+        map(sorted, (_, i) => {
+          _date[i] = sorted[i]['date']
+          _data[0][i] = sorted[i]['1']
+          _data[1][i] = sorted[i]['2']
+        })
+
+        setLineData(_data)
+        setLineDate(_date)
+        setReadyToProcess(true)
+        holderData.current = props.data
+      })()
+  }, [props])
 
   const {
     verticalMaxMin,
@@ -61,8 +93,8 @@ function _TwoYAxisLineChart(props: {
     lines
   } = twoYAxisLineChartAction(
     language,
-    data,
-    date,
+    lineData,
+    lineDate,
     ContainerRef,
     CursorContainerRef,
     VerticalCursorRef,
@@ -70,8 +102,13 @@ function _TwoYAxisLineChart(props: {
     DetailTextRef,
     DetailItemContainerRef,
     DetailContainerRef,
-    formattedValue
+    formattedValue,
+    readyToProcess
   )
+
+  useEffect(() => {
+    preprocessing()
+  }, [props.data])
 
   return (
     <div>

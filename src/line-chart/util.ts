@@ -39,7 +39,8 @@ export const lineChartAction = (
   detailTextRef: { current: any }[],
   detailItemContainerRef: { current: any }[],
   detailContainerRef: { current: any },
-  formattedValue: ((val: any) => any)[]
+  formattedValue: ((val: any) => any)[],
+  readyToProcess: boolean
 ): {
   verticalMaxMin: MinMax
   firstAndLastDate: FirstLast
@@ -181,6 +182,7 @@ export const lineChartAction = (
   }, [data])
 
   const prepareChart = useCallback(() => {
+    if (!readyToProcess) return
     const { minY, maxY } = prepareMinMax()
     const { minX, maxX } = prepareFirstLast()
 
@@ -217,11 +219,12 @@ export const lineChartAction = (
           setLines(_lines)
         })()
       : setLines(undefined)
-  }, [data])
+  }, [data, readyToProcess])
 
   const onCursorMove = useCallback(
     (event: MouseEvent) => {
       !isUndefined(lines) &&
+        readyToProcess &&
         (() => {
           const { clientX } = event
           const { left } = containerRef.current.getBoundingClientRect()
@@ -357,7 +360,8 @@ export const lineChartAction = (
       verticalCursorRef,
       formattedValue,
       detailTextRef,
-      detailContainerRef
+      detailContainerRef,
+      readyToProcess
     ]
   )
 
@@ -392,7 +396,7 @@ export const lineChartAction = (
       containerRef.current.removeEventListener('mousemove', onCursorMove, false)
       containerRef.current.removeEventListener('mouseleave', hideCursor, false)
     }
-  }, [containerRef, data])
+  }, [containerRef, data, lines])
 
   return {
     verticalMaxMin,
@@ -413,7 +417,8 @@ export const twoYAxisLineChartAction = (
   detailTextRef: { current: any }[],
   detailItemContainerRef: { current: any }[],
   detailContainerRef: { current: any },
-  formattedValue: ((val: any) => any)[]
+  formattedValue: ((val: any) => any)[],
+  readyToProcess: boolean,
 ): {
   verticalMaxMin: MinMax[]
   firstAndLastDate: FirstLast
@@ -535,6 +540,7 @@ export const twoYAxisLineChartAction = (
   }, [date])
 
   const prepareChart = useCallback(() => {
+    if (!readyToProcess) return;
     setLines(undefined)
     const minMaxY = prepareMinMax()
     const {
@@ -578,11 +584,12 @@ export const twoYAxisLineChartAction = (
 
         setLines(_lines)
       })()
-  }, [data])
+  }, [data, readyToProcess])
 
   const onCursorMove = useCallback(
     (event: MouseEvent) => {
       !isUndefined(lines) &&
+      readyToProcess &&
         (() => {
           const { clientX } = event
           const { left } = containerRef.current.getBoundingClientRect()
@@ -651,7 +658,7 @@ export const twoYAxisLineChartAction = (
                         const dateIndex = indexOf(date, findClosestDate)
                         const selectedData: any = data[idx][dateIndex]
 
-                        selectedData &&
+                        !isUndefined(selectedData) &&
                           (() => {
                             const { x, y } = findXY(
                               positionLeft,
@@ -715,7 +722,8 @@ export const twoYAxisLineChartAction = (
       verticalCursorRef,
       formattedValue,
       detailTextRef,
-      detailContainerRef
+      detailContainerRef,
+      readyToProcess,
     ]
   )
 
@@ -764,7 +772,7 @@ export const twoYAxisLineChartAction = (
       containerRef.current.removeEventListener('mousemove', onCursorMove, false)
       containerRef.current.removeEventListener('mouseleave', hideCursor, false)
     }
-  }, [containerRef, data])
+  }, [containerRef, data, lines])
 
   return {
     verticalMaxMin,

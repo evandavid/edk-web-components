@@ -1,31 +1,31 @@
-import { map, range } from 'lodash';
-import React, { memo, useRef } from 'react';
+import { isEqual, map, range, sortBy } from 'lodash';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import { FlexOne, FlexRow } from '../flex';
 import { formattedDate, numberFormat, shortNumberFormat } from '../functions';
 import {
-    Container,
-    CursorContainer,
-    CursorElement,
-    DateDetailContainer,
-    DateLabel,
-    DetailContainer,
-    DetailLabelText,
-    DetailTextContainer,
-    DetailTextInnerContainer,
-    DottedLine,
-    HorizontalLabel,
-    HorizontalLine,
-    Label,
-    LegendElement,
-    LineChartContainer,
-    LineInnerContainer,
-    VerticalContainer,
-    VerticalCursor,
-    VerticalLabelContainer,
-    VerticalLine,
-    WhiteCursor,
-    ZeroLabel
+  Container,
+  CursorContainer,
+  CursorElement,
+  DateDetailContainer,
+  DateLabel,
+  DetailContainer,
+  DetailLabelText,
+  DetailTextContainer,
+  DetailTextInnerContainer,
+  DottedLine,
+  HorizontalLabel,
+  HorizontalLine,
+  Label,
+  LegendElement,
+  LineChartContainer,
+  LineInnerContainer,
+  VerticalContainer,
+  VerticalCursor,
+  VerticalLabelContainer,
+  VerticalLine,
+  WhiteCursor,
+  ZeroLabel
 } from './elements';
 import { ChartColors, lineChartAction, Point } from './util';
 
@@ -39,7 +39,6 @@ function _LineChart(props: {
 
   const {
     language,
-    data,
     labels,
     formattedValue = [format, format, format, format, format]
   } = props
@@ -50,10 +49,25 @@ function _LineChart(props: {
   const VerticalCursorRef = useRef<any>()
   const SelectedDateDetailRef = useRef<any>()
   const DetailContainerRef = useRef<any>()
+  const holderData = useRef<any>()
+
+  const [readyToProcess, setReadyToProcess] = useState<boolean>(false)
+  const [lineData, setLineData] = useState<Point[][]>(props.data)
+
+  // preprocessing sort date
+  const preprocessing = useCallback(() => {
+    !isEqual(holderData.current, props.data) &&
+      (() => {
+        setReadyToProcess(false)
+        const sorted: any = map(props.data, (d) => sortBy(d, ['x'], ['asc']))
+        setLineData(sorted)
+        setReadyToProcess(true)
+      })()
+  }, [props])
 
   const { verticalMaxMin, firstAndLastDate, getLabel, lines } = lineChartAction(
     language,
-    data,
+    lineData,
     false,
     ContainerRef,
     CursorContainerRef,
@@ -62,8 +76,13 @@ function _LineChart(props: {
     DetailTextRef,
     DetailItemContainerRef,
     DetailContainerRef,
-    formattedValue
+    formattedValue,
+    readyToProcess
   )
+
+  useEffect(() => {
+    preprocessing()
+  }, [props.data])
 
   return (
     <div>

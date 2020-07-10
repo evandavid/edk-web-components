@@ -27,7 +27,7 @@ export declare const lineChartAction: (language: string, data: Point[][], madeUp
     current: any;
 }[], detailContainerRef: {
     current: any;
-}, formattedValue: ((val: any) => any)[]) => {
+}, formattedValue: ((val: any) => any)[], readyToProcess: boolean) => {
     verticalMaxMin: MinMax;
     firstAndLastDate: FirstLast;
     lines: any[] | undefined;
@@ -47,7 +47,7 @@ export declare const twoYAxisLineChartAction: (language: string, data: number[][
     current: any;
 }[], detailContainerRef: {
     current: any;
-}, formattedValue: ((val: any) => any)[]) => {
+}, formattedValue: ((val: any) => any)[], readyToProcess: boolean) => {
     verticalMaxMin: MinMax[];
     firstAndLastDate: FirstLast;
     lines: string[] | undefined;

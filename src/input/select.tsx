@@ -149,9 +149,11 @@ function Selects(props: ISelectProps) {
       const fuse = new Fuse(masterOptions, options)
       let _newOptions = []
       if (newQuery === '' || !newQuery) _newOptions = masterOptions
-      else _newOptions = fuse.search(newQuery || '') || []
+      else
+        _newOptions = fuse.search(newQuery || '').map((i: any) => i.item) || []
 
-      setOptions(_newOptions.map((i: any) => i.item))
+      console.log(_newOptions, fuse.search(newQuery || ''))
+      setOptions(_newOptions)
       setQuery(value)
     },
     [masterOptions]

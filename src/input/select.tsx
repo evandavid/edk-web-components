@@ -1,28 +1,28 @@
-import Fuse from 'fuse.js';
+import Fuse from 'fuse.js'
 import {
-    capitalize,
-    clone,
-    filter,
-    find,
-    flowRight,
-    isArray,
-    isEqual,
-    map,
-    omit,
-    pick
-} from 'lodash';
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+  capitalize,
+  clone,
+  filter,
+  find,
+  flowRight,
+  isArray,
+  isEqual,
+  map,
+  omit,
+  pick
+} from 'lodash'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 
-import { MDCMenu } from '@material/menu';
-import MaterialIcon from '@material/react-material-icon';
-import { HelperText } from '@material/react-text-field';
+import { MDCMenu } from '@material/menu'
+import MaterialIcon from '@material/react-material-icon'
+import { HelperText } from '@material/react-text-field'
 
-import { FlexOne, FlexRow } from '../flex';
-import { CustomInputProps } from './';
-import { EDKNativeInput } from './native/edk-input';
-import EDKTextField from './native/edk-text-field';
-import { ModuitMenuFoundation } from './native/menu-foundation';
+import { FlexOne, FlexRow } from '../flex'
+import { CustomInputProps } from './'
+import { EDKNativeInput } from './native/edk-input'
+import EDKTextField from './native/edk-text-field'
+import { ModuitMenuFoundation } from './native/menu-foundation'
 
 const StyledTextField: any = styled(EDKTextField)`
   width: 100%;
@@ -149,9 +149,9 @@ function Selects(props: ISelectProps) {
       const fuse = new Fuse(masterOptions, options)
       let _newOptions = []
       if (newQuery === '' || !newQuery) _newOptions = masterOptions
-      else _newOptions = fuse.search(newQuery || '')
+      else _newOptions = fuse.search(newQuery || '') || []
 
-      setOptions(_newOptions)
+      setOptions(_newOptions.map((i: any) => i.item))
       setQuery(value)
     },
     [masterOptions]

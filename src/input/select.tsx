@@ -152,7 +152,6 @@ function Selects(props: ISelectProps) {
       else
         _newOptions = fuse.search(newQuery || '').map((i: any) => i.item) || []
 
-      console.log(_newOptions, fuse.search(newQuery || ''))
       setOptions(_newOptions)
       setQuery(value)
     },

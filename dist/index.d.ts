@@ -406,6 +406,7 @@ declare module 'edk-web-components/input/index' {
         parentStyle?: any;
         id?: string;
         disableChange?: boolean;
+        preventDebounce?: boolean;
     }
     function Inputs(props: CustomInputProps): JSX.Element;
     const _default: React.MemoExoticComponent<typeof Inputs>;
@@ -575,6 +576,7 @@ declare module 'edk-web-components/input' {
         parentStyle?: any;
         id?: string;
         disableChange?: boolean;
+        preventDebounce?: boolean;
     }
     function Inputs(props: CustomInputProps): JSX.Element;
     const _default: React.MemoExoticComponent<typeof Inputs>;

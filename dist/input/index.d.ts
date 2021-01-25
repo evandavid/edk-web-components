@@ -65,6 +65,7 @@ export interface CustomInputProps extends Omit<React.HTMLProps<HTMLInputElement>
     parentStyle?: any;
     id?: string;
     disableChange?: boolean;
+    preventDebounce?: boolean;
 }
 declare function Inputs(props: CustomInputProps): JSX.Element;
 declare const _default: React.MemoExoticComponent<typeof Inputs>;

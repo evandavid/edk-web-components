@@ -1,13 +1,30 @@
-import { clone, debounce, dropWhile, isString, map, omit, pick, range, remove } from 'lodash';
-import format from 'number-format.js';
-import React, { ChangeEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import {
+  clone,
+  debounce,
+  dropWhile,
+  isString,
+  map,
+  omit,
+  pick,
+  range,
+  remove
+} from 'lodash'
+import format from 'number-format.js'
+import React, {
+  ChangeEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+import styled from 'styled-components'
 
-import { HelperText } from '@material/react-text-field';
+import { HelperText } from '@material/react-text-field'
 
-import { randomChar } from '../functions';
-import { EDKNativeInput } from './native/edk-input';
-import EDKTextField from './native/edk-text-field';
+import { randomChar } from '../functions'
+import { EDKNativeInput } from './native/edk-input'
+import EDKTextField from './native/edk-text-field'
 
 const formatting: any = {
   en: '#,##0.####',
@@ -105,6 +122,7 @@ export interface CustomInputProps
   parentStyle?: any
   id?: string
   disableChange?: boolean
+  preventDebounce?: boolean
 }
 
 const StyledTextField: any = styled(EDKTextField)`
@@ -215,7 +233,8 @@ function Inputs(props: CustomInputProps) {
     'maxDate',
     'id',
     'disableChange',
-    'minDate'
+    'minDate',
+    'preventDebounce'
   ])
 
   const textFieldProps = pick(props, [
@@ -364,7 +383,7 @@ function Inputs(props: CustomInputProps) {
         currentCharLength.current = unmaskedValue ? unmaskedValue.length : 0
         maxCharRef.current.innerHTML = `${currentCharLength.current}/${props.maxLength}`
       }
-      if (props.type === 'password' || props.numeric)
+      if (props.type === 'password' || props.numeric || props.preventDebounce)
         props.onChange(props.fieldId, unmaskedValue)
       else sendToParent(props.fieldId, unmaskedValue)
     },

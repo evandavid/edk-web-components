@@ -234,7 +234,9 @@ function Inputs(props: CustomInputProps) {
     'id',
     'disableChange',
     'minDate',
-    'preventDebounce'
+    'preventDebounce',
+    'hideBackdrop',
+    'trailingIconName'
   ])
 
   const textFieldProps = pick(props, [

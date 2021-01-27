@@ -10,5 +10,7 @@ export interface IDatepickerFieldProps extends CustomInputProps {
     toValue?: any;
     dateType?: any;
     modalStyle?: any;
+    hideBackdrop?: boolean;
+    trailingIconName?: string;
 }
 export declare const EDKDatepickerField: any;

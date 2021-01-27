@@ -472,6 +472,8 @@ declare module 'edk-web-components/input/_type/datepicker-field' {
         toValue?: any;
         dateType?: any;
         modalStyle?: any;
+        hideBackdrop?: boolean;
+        trailingIconName?: string;
     }
     export const EDKDatepickerField: any;
 }

@@ -1,13 +1,13 @@
-import { flowRight } from 'lodash';
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { flowRight } from 'lodash'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-import MaterialIcon from '@material/react-material-icon';
+import MaterialIcon from '@material/react-material-icon'
 
-import Inputs, { CustomInputProps } from '../';
-import { Datepicker } from '../../datepicker';
-import { FlexRow } from '../../flex';
-import { formattedDate } from '../../functions';
+import Inputs, { CustomInputProps } from '../'
+import { Datepicker } from '../../datepicker'
+import { FlexRow } from '../../flex'
+import { formattedDate } from '../../functions'
 
 export const AsShadow = styled.div`
   position: fixed;
@@ -44,10 +44,16 @@ export interface IDatepickerFieldProps extends CustomInputProps {
   dateType?: any
 
   modalStyle?: any
+  hideBackdrop?: boolean
+  trailingIconName?: string
 }
 
 function _DatepickerField(props: IDatepickerFieldProps) {
-  const { language = 'en ' } = props
+  const {
+    language = 'en ',
+    hideBackdrop = false,
+    trailingIconName = 'date_range'
+  } = props
 
   const [isShow, setIsShow] = useState(false)
   const [maskedValue, setMaskedValue] = useState(
@@ -100,18 +106,20 @@ function _DatepickerField(props: IDatepickerFieldProps) {
         {...props}
         onChange={() => {}}
         readOnly={true}
-        trailingIcon={<MaterialIcon role={'button'} icon={'date_range'} />}
+        trailingIcon={<MaterialIcon role={'button'} icon={trailingIconName} />}
         value={maskedValue}
         onClick={() => {
           if (!props.disabled && !props.readOnly) setIsShow(true)
         }}
       />
       <AsModal opened={isShow}>
-        <AsShadow
-          onClick={() => {
-            setIsShow(false)
-          }}
-        />
+        {!hideBackdrop && (
+          <AsShadow
+            onClick={() => {
+              setIsShow(false)
+            }}
+          />
+        )}
         <DateContainer>
           <Datepicker
             defaultDate={props.value ? (props.value as any) : defaultDate}

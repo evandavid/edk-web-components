@@ -97,28 +97,28 @@ function _DatepickerField(props: IDatepickerFieldProps) {
   const manipulate = () => {
     if (!hideBackdrop) return
 
+    // look for other datepicker and close it
+    const modals = document.getElementsByClassName('modal')
+    if (modals.length) {
+      Array.from(modals).forEach((modal: any) => {
+        modal.style.display = 'none'
+      })
+    }
+
+    // open this intansance forcefully
+    const currentElement: any = document.getElementById(modalRef.current)
+
     setTimeout(() => {
-      // look for other datepicker and close it
-      const modals = document.getElementsByClassName('modal')
-      if (modals.length) {
-        Array.from(modals).forEach((modal: any) => {
-          modal.style.display = 'none'
-        })
-      }
-
-      // open this intansance forcefully
-      const currentElement: any = document.getElementById(modalRef.current)
-
-      setTimeout(() => {
-        if (currentElement) {
-          console.log(currentElement)
-          if (currentElement.style.removeProperty) {
-            currentElement.style.removeProperty('display')
-          } else {
-            currentElement.style.removeAttribute('display')
-          }
+      if (currentElement) {
+        console.log(currentElement)
+        if (currentElement.style.removeProperty) {
+          currentElement.style.removeProperty('display')
+        } else if (currentElement.style.removeAttribute) {
+          currentElement.style.removeAttribute('display')
+        } else {
+          currentElement.style.display = 'block'
         }
-      }, 200)
+      }
     }, 100)
   }
 
@@ -140,13 +140,18 @@ function _DatepickerField(props: IDatepickerFieldProps) {
         value={maskedValue}
         onClick={() => {
           if (!props.disabled && !props.readOnly) {
-            setIsShow(true)
             manipulate()
+            setTimeout(
+              () => {
+                setIsShow(true)
+              },
+              hideBackdrop ? 200 : 10
+            )
           }
         }}
       />
       <AsModal
-        id={modalRef}
+        id={modalRef.current}
         opened={isShow}
         className={`modal ${isShow ? 'show' : ''}`}
       >

@@ -7,7 +7,7 @@ import MaterialIcon from '@material/react-material-icon'
 import Inputs, { CustomInputProps } from '../'
 import { Datepicker } from '../../datepicker'
 import { FlexRow } from '../../flex'
-import { formattedDate } from '../../functions'
+import { formattedDate, randomChar } from '../../functions'
 
 export const AsShadow = styled.div`
   position: fixed;
@@ -55,7 +55,7 @@ function _DatepickerField(props: IDatepickerFieldProps) {
     trailingIconName = 'date_range'
   } = props
 
-  const modalRef = useRef<any>()
+  const modalRef = useRef<any>(randomChar())
 
   const [isShow, setIsShow] = useState(false)
   const [maskedValue, setMaskedValue] = useState(
@@ -94,10 +94,12 @@ function _DatepickerField(props: IDatepickerFieldProps) {
     }
   }, [props.value])
 
-  useEffect(() => {
-    if (isShow) {
+  const manipulate = () => {
+    if (!hideBackdrop) return
+
+    setTimeout(() => {
       // look for other datepicker and close it
-      const modals = document.getElementsByClassName('modal show')
+      const modals = document.getElementsByClassName('modal')
       if (modals.length) {
         Array.from(modals).forEach((modal: any) => {
           modal.style.display = 'none'
@@ -105,15 +107,20 @@ function _DatepickerField(props: IDatepickerFieldProps) {
       }
 
       // open this intansance forcefully
-      if (modalRef.current) {
-        if (modalRef.current.style.removeProperty) {
-          modalRef.current.style.removeProperty('display')
-        } else {
-          modalRef.current.style.removeAttribute('display')
+      const currentElement: any = document.getElementById(modalRef.current)
+
+      setTimeout(() => {
+        if (currentElement) {
+          console.log(currentElement)
+          if (currentElement.style.removeProperty) {
+            currentElement.style.removeProperty('display')
+          } else {
+            currentElement.style.removeAttribute('display')
+          }
         }
-      }
-    }
-  }, [isShow])
+      }, 200)
+    }, 100)
+  }
 
   let minDate = props.minDate
   let maxDate = props.maxDate
@@ -132,11 +139,14 @@ function _DatepickerField(props: IDatepickerFieldProps) {
         trailingIcon={<MaterialIcon role={'button'} icon={trailingIconName} />}
         value={maskedValue}
         onClick={() => {
-          if (!props.disabled && !props.readOnly) setIsShow(true)
+          if (!props.disabled && !props.readOnly) {
+            setIsShow(true)
+            manipulate()
+          }
         }}
       />
       <AsModal
-        ref={modalRef}
+        id={modalRef}
         opened={isShow}
         className={`modal ${isShow ? 'show' : ''}`}
       >

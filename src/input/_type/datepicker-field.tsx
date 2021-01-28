@@ -1,5 +1,5 @@
 import { flowRight } from 'lodash'
-import React, { memo, useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import MaterialIcon from '@material/react-material-icon'
@@ -55,6 +55,8 @@ function _DatepickerField(props: IDatepickerFieldProps) {
     trailingIconName = 'date_range'
   } = props
 
+  const modalRef = useRef<any>()
+
   const [isShow, setIsShow] = useState(false)
   const [maskedValue, setMaskedValue] = useState(
     formattedDate(props.value, language)
@@ -92,6 +94,27 @@ function _DatepickerField(props: IDatepickerFieldProps) {
     }
   }, [props.value])
 
+  useEffect(() => {
+    if (isShow) {
+      // look for other datepicker and close it
+      const modals = document.getElementsByClassName('modal show')
+      if (modals.length) {
+        Array.from(modals).forEach((modal: any) => {
+          modal.style.display = 'none'
+        })
+      }
+
+      // open this intansance forcefully
+      if (modalRef.current) {
+        if (modalRef.current.style.removeProperty) {
+          modalRef.current.style.removeProperty('display')
+        } else {
+          modalRef.current.style.removeAttribute('display')
+        }
+      }
+    }
+  }, [isShow])
+
   let minDate = props.minDate
   let maxDate = props.maxDate
   let defaultDate = new Date()
@@ -112,7 +135,11 @@ function _DatepickerField(props: IDatepickerFieldProps) {
           if (!props.disabled && !props.readOnly) setIsShow(true)
         }}
       />
-      <AsModal opened={isShow}>
+      <AsModal
+        ref={modalRef}
+        opened={isShow}
+        className={`modal ${isShow ? 'show' : ''}`}
+      >
         {!hideBackdrop && (
           <AsShadow
             onClick={() => {
